@@ -2,21 +2,22 @@ package main
 
 import (
 	"fmt"
-	"github.com\zhashkevych\go-basics\06@v0.0.0-20210613092302-c14ff6043162\storage\storage"
+
+	"github.com/Dmitriysolo/gogo/stor/storage"
 )
 
 func main() {
-	ms := newMemoryStorage()
-	ds := newDumbStorage()
+	ms := storage.NewMemoryStorage()
+	ds := storage.NewDumbStorage()
 
 	spawnEmployees(ms)
-	fmt.Println(ms.get(3))
+	fmt.Println(ms.Get(3))
 
 	spawnEmployees(ds)
 }
 
-func spawnEmployees(s Storage) {
+func spawnEmployees(s storage.Storage) {
 	for i := 1; i <= 10; i++ {
-		s.Insert(Employee{id: i})
+		s.Insert(storage.Employee{Id: i})
 	}
 }
