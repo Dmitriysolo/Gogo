@@ -37,6 +37,14 @@ func (h *Handler) CreateEmployee(c *gin.Context) {
 func (h *Handler) UpdateEmployee(c *gin.Context) {
 
 	var employee Employee
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		fmt.Printf("failed to convert id param to int: %s\n", err.Error())
+		c.JSON(http.StatusBadRequest, ErrorResponse{
+			Message: err.Error(),
+		})
+		return
+	}
 
 	if err := c.BindJSON(&employee); err != nil {
 		fmt.Printf("failed to bind employee: %s\n", err.Error())
@@ -45,6 +53,8 @@ func (h *Handler) UpdateEmployee(c *gin.Context) {
 		})
 		return
 	}
+
+	employee.ID = id
 
 	h.storage.Update(c, &employee)
 

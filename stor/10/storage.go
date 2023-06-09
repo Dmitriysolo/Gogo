@@ -16,7 +16,7 @@ type Employee struct {
 type Storage interface {
 	Insert(ctx context.Context, e *Employee) error
 	Get(ctx context.Context, id int) (*Employee, error)
-	Update(ctx context.Context, e *Employee) (*Employee, error)
+	Update(ctx context.Context, e *Employee) error
 	Delete(ctx context.Context, id int) error
 }
 
@@ -57,15 +57,13 @@ func (s *MemoryStorage) Get(ctx context.Context, id int) (*Employee, error) {
 	return e, nil
 }
 
-func (s *MemoryStorage) Update(ctx context.Context, e *Employee) (*Employee, error) {
-	sEMP, err := s.employeeDAO.FindByID(ctx, e.ID)
+func (s *MemoryStorage) Update(ctx context.Context, e *Employee) error {
+
+	err := s.employeeDAO.Update(ctx, e)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	sEMP = e
-
-	return sEMP, s.employeeDAO.Update(ctx, sEMP)
-
+	return err
 }
 
 func (s *MemoryStorage) Delete(ctx context.Context, id int) error {
